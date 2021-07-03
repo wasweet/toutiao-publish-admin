@@ -3,8 +3,21 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+// 引入elementUI
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+
+// 加载全局样式文件
+import './styles/index.less'
+
+
+
 Vue.config.productionTip = false
 
+// 注册全局elementUI
+Vue.use(ElementUI)
+
+// 通过 render 方法把 App 跟组件渲染到 #app 入口节点
 new Vue({
   router,
   store,
