@@ -39,3 +39,40 @@ export const delArticles = (articleId) => {
 	})
 }
 
+/**
+ * 添加文章
+ */
+export const addArticles = (data, draft = false) => {
+  return request({
+    method: 'POST',
+    url: '/mp/v1_0/articles',
+    params: {
+      draft // 是否存为草稿（true 为草稿）
+    },
+    data
+  })
+}
+
+/**
+ * 获取指定文章
+ */
+export const getArticle = (articleId) => {
+  return request({
+    method: 'GET',
+    url: `/mp/v1_0/articles/${articleId}`
+  })
+}
+
+/**
+ * 编辑 文章
+ */
+export const updateArticle = (articleId, data, draft = false) => {
+  return request({
+    method: 'PUT',
+    url: `/mp/v1_0/articles/${articleId}`,
+    params: {
+      draft // 是否存为草稿（true 为草稿）
+    },
+    data
+  })
+}

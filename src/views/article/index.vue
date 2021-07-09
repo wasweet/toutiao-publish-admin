@@ -81,9 +81,10 @@
 				</el-table-column>
 				<el-table-column prop="address" label="操作">
 					<template slot-scope="scope">
-						<el-button size="mini" circle icon="el-icon-edit" type="primary"></el-button>
+						<el-button size="mini" circle icon="el-icon-edit" type="primary"
+												@click="$router.push('/publish?id=' + scope.row.id)"></el-button>
 						<el-button size="mini" type="danger" icon="el-icon-delete" circle
-							@click="onDelArticles(scope.row.id)"></el-button>
+												@click="onDelArticles(scope.row.id)"></el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -166,8 +167,10 @@
 		computed: {},
 		watch: {},
 		created() {
+			// 获取文章列表 默认第一页
 			this.localArticles(1),
-				this.locaArticlesChannels()
+			// 获取频道信息
+			this.locaArticlesChannels()
 		},
 		mounted() {},
 		methods: {
@@ -195,6 +198,7 @@
 				// 关闭加载 loading
 				this.loading = false
 			},
+			// 分页
 			onCurrentChange(page) {
 				this.localArticles(page)
 			},
@@ -206,7 +210,7 @@
 			},
 			// 删除文章
 			onDelArticles (articleId) {
-				console.log(articleId)
+				// console.log(articleId)
 				this.$confirm('是否删除此文章?', '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
