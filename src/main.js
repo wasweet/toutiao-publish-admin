@@ -12,8 +12,15 @@ import './styles/index.less'
 // 顶部进度条
 import "nprogress/nprogress.css"
 
+// 引入 富文本编辑器
+import { ElementTiptapPlugin } from 'element-tiptap'
+//import element-tiptap 样式
+import 'element-tiptap/lib/index.css'
+
 // 注册全局elementUI
 Vue.use(ElementUI)
+
+Vue.use(ElementTiptapPlugin, { lang: "zh" });
 
 Vue.config.productionTip = false
 

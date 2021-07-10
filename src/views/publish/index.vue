@@ -11,12 +11,23 @@
 			</div>
 			<div class="text item">
 				<!-- 表单 -->
-				<el-form :model="article" ref="article" label-width="100px" class="article-from">
+				<el-form 
+					:model="article" 
+					ref="article-form" 
+					label-width="100px" 
+					class="article-from"
+					:rules="formRules"
+					>
 					<el-form-item label="标题" prop="title">
 						<el-input v-model="article.title"></el-input>
 					</el-form-item>
-					<el-form-item label="内容">
-						<el-input type="textarea" v-model="article.content"></el-input>
+					<el-form-item label="内容" prop="content">
+						<!-- <el-input type="textarea" v-model="article.content"></el-input> -->
+						 <el-tiptap
+						      v-model="article.content"
+						      :extensions="extensions"
+									placeholder="请输入内容"
+						    />
 					</el-form-item>
 
 					<el-form-item label="封面" prop="type">
@@ -27,7 +38,7 @@
 							<el-radio :label="-1">自动</el-radio>
 						</el-radio-group>
 					</el-form-item>
-					<el-form-item label="频道">
+					<el-form-item label="频道" prop="channel_id">
 						<el-select v-model="article.channel_id" placeholder="请选择频道">
 							<el-option :label="channel.name" :value="channel.id" v-for="(channel,index) in channels"
 								:key="index"></el-option>
@@ -44,12 +55,34 @@
 </template>
 
 <script>
-	import {
-		getArticlesChannels,
-		addArticles, //发布
-		getArticle, //获取指定文章
-		updateArticle //编辑文章
-	} from '@/api/article'
+import {
+	getArticlesChannels,
+	addArticles, //发布
+	getArticle, //获取指定文章
+	updateArticle //编辑文章
+} from '@/api/article'
+import { uploadImage } from '@/api/images'
+import {
+  // 需要的 extensions
+  Doc,
+  Text,
+  Paragraph,
+  Heading,
+  Bold,
+  Underline,
+  Italic,
+  Image,
+  Strike,
+  ListItem,
+  BulletList,
+  OrderedList,
+  TodoItem,
+  TodoList,
+  HorizontalRule,
+  Fullscreen,
+  Preview,
+  CodeBlock
+} from 'element-tiptap'
 
 	export default {
 		name: 'PublishIndex',
@@ -64,9 +97,63 @@
 						type: 0, //类型
 						images: [] // 封面图片的地址
 					},
-					// channel_id: null //频道 id
+					// channel_id: null
 				},
-				channels: [] //频道列表
+				channels: [], //频道列表
+				// 编辑器的 extensions
+				// 它们将会按照你声明的顺序被添加到菜单栏和气泡菜单中
+				 extensions: [
+				   new Doc(),
+				   new Text(),
+				   new Paragraph(),
+				   new Heading({ level: 3 }),
+				   new Bold({ bubble: true }), // 在气泡菜单中渲染菜单按钮
+				   new Image({//图片
+					 // 将本地图片 转为 在线地址    (有问题 未解决)
+						 uploadRequest (file) {
+							 // console.log(file)
+							 const fd = new FormData()
+							 fd.append('image', file)
+							 return uploadImage(fd).then(res => {
+								 console.log(res)
+								 // return res.data.data.url
+							 })
+						 }
+					 }), 
+				   new Underline(), // 下划线
+				   new Italic(), // 斜体
+				   new Strike(), // 删除线
+				   new HorizontalRule(), // 华丽的分割线
+				   new ListItem(),
+				   new BulletList(), // 无序列表
+				   new OrderedList(), // 有序列表
+				   new TodoItem(),
+				   new TodoList(),
+				   new Fullscreen(),
+				   new Preview(),
+				   new CodeBlock()
+				 ],
+				 formRules: {
+					 title: [
+					 	 { required: true, message: '请输入文章标题', trigger: "blur" },
+						 { min: 3, max: 30, message: '长度必须子啊5到30个字符', trigger: 'blur' }
+					 ],
+					 content: [
+						 {
+							 validator (rule, value, callback) {
+								 if (value === '<p></p>') {
+									 callback(new Error('请输入文章内容'))
+								 } else {
+									 callback()
+								 }
+							 }
+						 },
+						 { required: true, message: '请输入文章内容', trigger: 'blur' }
+					 ],
+					 channel_id: [
+					 					 { required: true, message: '请选择频道',trigger: 'blur' }
+					 ]
+				 }
 			}
 		},
 		computed: {},
@@ -89,31 +176,38 @@
 				this.channels = res.data.data.channels
 			},
 			onPublish(draft = false) {
-				// 修改
-				const articleId = this.$route.query.id
-				if (articleId) {
-					updateArticle(articleId, this.article, draft).then(res => {
-						console.log(res)
-						this.$message({
-							message: `${draft ? '存入草稿' : '修改'}成功`,
-							type: 'success'
+				// 表单验证
+				this.$refs['article-form'].validate((valid) => {
+					if (!valid) {
+						return
+					}
+					// 修改
+					const articleId = this.$route.query.id
+					if (articleId) {
+						updateArticle(articleId, this.article, draft).then(res => {
+							console.log(res)
+							this.$message({
+								message: `${draft ? '存入草稿' : '修改'}成功`,
+								type: 'success'
+							})
+							// 跳转到内容管理页面
+							this.$router.push('/article')
 						})
-						// 跳转到内容管理页面
-						this.$router.push('/article')
-					})
-				} else {
-					// 发布
-					addArticles(this.article, draft).then(res => {
-						// 处理响应结果
-						// console.log(res)
-						this.$message({
-							message: `${draft ? '保存' : '发布'}成功`,
-							type: 'success'
+					} else {
+						// 发布
+						addArticles(this.article, draft).then(res => {
+							// 处理响应结果
+							// console.log(res)
+							this.$message({
+								message: `${draft ? '保存' : '发布'}成功`,
+								type: 'success'
+							})
+							// 跳转到内容管理页面
+							this.$router.push('/article')
 						})
-						// 跳转到内容管理页面
-						this.$router.push('/article')
-					})
-				}
+					}
+				})
+				
 			},
 			// 展示文章信息
 			async localArticle() {
