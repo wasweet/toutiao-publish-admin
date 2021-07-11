@@ -65,6 +65,7 @@
 	} from '@/api/user'
 	import 'cropperjs/dist/cropper.css';
 	import Cropper from 'cropperjs';
+	import globalBus from '@/utils/global-bus'
 	export default {
 		name: 'SettingsIndex',
 		components: {},
@@ -128,6 +129,8 @@
 					})
 				})
 				this.userInfoLoading = false
+				// 发送通知 更新用户资料
+				globalBus.$emit('uploadUserInfo',this.user)
 			},
 			onFileChange () {
 				// 处理图片预览
@@ -190,6 +193,9 @@
 						this.user.photo = window.URL.createObjectURL(file)
 						// loading 结束
 						this.uploadLoading = false
+						// 发送通知 更新用户资料
+						globalBus.$emit('uploadUserInfo',this.user)
+						
 						this.$message({
 							type: 'success',
 							message: '更换成功'

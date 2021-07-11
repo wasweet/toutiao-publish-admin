@@ -43,7 +43,7 @@
 import AppAside from './components/aside'
 // import Header from './components/header'
 import { getUserProfile } from '@/api/user'
-	
+import globalBus from '@/utils/global-bus'
 export default {
   name: 'LayoutIndex',
   components: {
@@ -63,6 +63,12 @@ export default {
   created () {
 		// 组件初始化好，请求用户详细信息资料
 		this.localUserProfile()
+		
+		// 接收通知  用户更新资料
+		globalBus.$on('uploadUserInfo',(data) => {
+			this.userInfo.name = data.name
+			this.userInfo.photo = data.photo
+		})
 	},
   mounted () {},
   methods: {
