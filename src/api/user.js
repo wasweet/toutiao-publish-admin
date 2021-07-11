@@ -28,3 +28,21 @@ export const getUserProfile = () => {
 		//}
 	})
 }
+
+// 编辑用户资料
+export const uploadUserInfo = (data) => {
+	return request({
+		method: 'PATCH',
+		url: '/mp/v1_0/user/profile',
+		data
+	})
+}
+
+// 编辑用户 头像
+export const uploadUserImg = data => {
+	return request({
+		method: 'PATCH',
+		url:'/mp/v1_0/user/photo',
+		data
+	})
+}

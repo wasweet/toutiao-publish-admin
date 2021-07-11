@@ -115,8 +115,8 @@ import {
 							 const fd = new FormData()
 							 fd.append('image', file)
 							 return uploadImage(fd).then(res => {
-								 console.log(res)
-								 // return res.data.data.url
+								 // console.log(res)
+								  return res.data.data.url
 							 })
 						 }
 					 }), 
@@ -151,7 +151,7 @@ import {
 						 { required: true, message: '请输入文章内容', trigger: 'blur' }
 					 ],
 					 channel_id: [
-					 					 { required: true, message: '请选择频道',trigger: 'blur' }
+					 	 { required: true, message: '请选择频道',trigger: 'blur' }
 					 ]
 				 }
 			}

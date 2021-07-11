@@ -89,7 +89,7 @@ import { getArticles, updateCommentStatus } from '@/api/article'
 					article.loading = false
 				})
 				// <在 /article 对象中添加 loading 数据 来控制每个操作按钮的 loading 状态>
-				 console.log(res)
+				 // console.log(res)
 				this.articles = res.data.data.results
 				this.totalCount = res.data.data.total_count
 			},
