@@ -93,7 +93,7 @@ export default {
 				Authorization : `Bearer ${user.token}`
 			},
 			totalCount: 0, // 总数据条数
-			pageSize: 10, // 每页显示的条目数
+			pageSize: 12, // 每页显示的条目数
 			page: 1 ,// 当前页码
 			loading: true,  // 表格加载数据中 loading
 		}

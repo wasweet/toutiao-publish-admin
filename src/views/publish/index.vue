@@ -37,6 +37,20 @@
 							<el-radio :label="3">三图</el-radio>
 							<el-radio :label="-1">自动</el-radio>
 						</el-radio-group>
+						<template v-if="article.cover.type > 0">
+						<!-- v-modal=""    等于下面写法
+										:vaule="" +  @input=""
+						 -->
+							<UploadCover v-for="(cover,index) in article.cover.type" 
+													 :key="index"
+													 v-model="article.cover.images[index]"
+													 ></UploadCover>
+							<!-- <UploadCover v-for="(cover,index) in article.cover.type"
+													 :key="index"
+													 :upload-cover="article.cover.images[index]"
+													 @upload-img="onUpdateImg(index, $event)"
+													 ></UploadCover> -->
+						</template>
 					</el-form-item>
 					<el-form-item label="频道" prop="channel_id">
 						<el-select v-model="article.channel_id" placeholder="请选择频道">
@@ -83,10 +97,12 @@ import {
   Preview,
   CodeBlock
 } from 'element-tiptap'
-
+import UploadCover from './components/upload-cover.vue'
 	export default {
 		name: 'PublishIndex',
-		components: {},
+		components: {
+			UploadCover
+		},
 		props: {},
 		data() {
 			return {
@@ -214,6 +230,11 @@ import {
 				const res = await getArticle(this.$route.query.id)
 				// console.log(res)
 				this.article = res.data.data
+			},
+			// 接收子组件传来的图片地址
+			onUpdateImg (index, url) {
+				// console.log(index,url)
+				this.article.cover.images[index] = url
 			}
 		}
 	}

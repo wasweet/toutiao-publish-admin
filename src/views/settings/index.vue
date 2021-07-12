@@ -185,7 +185,7 @@
 					const fd = new FormData()
 					fd.append('photo', file)
 					uploadUserImg (fd).then(res => {
-						console.log(res)
+						// console.log(res)
 						// 关闭对话框
 						this.dialogVisible = false
 						// 更新图片展示
