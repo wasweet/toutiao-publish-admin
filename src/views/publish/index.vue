@@ -240,4 +240,5 @@ import UploadCover from './components/upload-cover.vue'
 	}
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+</style>
