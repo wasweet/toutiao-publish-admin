@@ -4,6 +4,7 @@
 
 import axios from 'axios'
 import JSONbig from 'json-bigint'
+import router from '@/router'
 
 // 创建一个 axios 实例
 // 我们通过这个实例去发请求，把需要的配置配置给这个实例来处理
@@ -46,6 +47,16 @@ request.interceptors.request.use(function (config) {
     return Promise.reject(error);
   });
 // 响应拦截器
+request.interceptors.response.use(function (response) {
+	return response
+},function (error) {
+	if (error.response && error.response.status === 401) {
+		// 跳转到登陆页面
+		// 清除本地存储中的用户登陆状态
+		window.localStorage.removeItem('user')
+		router.push('/login')
+	}
+})
 
 // 导出请求方法
 export default request
