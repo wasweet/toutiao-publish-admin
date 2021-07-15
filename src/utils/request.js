@@ -5,6 +5,7 @@
 import axios from 'axios'
 import JSONbig from 'json-bigint'
 import router from '@/router'
+import { Message } from 'element-ui'
 
 // 创建一个 axios 实例
 // 我们通过这个实例去发请求，把需要的配置配置给这个实例来处理
@@ -55,7 +56,18 @@ request.interceptors.response.use(function (response) {
 		// 清除本地存储中的用户登陆状态
 		window.localStorage.removeItem('user')
 		router.push('/login')
+		Message.error('登陆状态无效，请重新登陆')
+	} else if(error.response.status === 403) {
+		Message({
+			type: 'warning',
+			message: '没有操作权限'
+		})
+	} else if (error.response.status === 400) {
+		Message.error('参数错误，请检查请求参数')
+	}else if (error.response.status >= 500) {
+		Message.error('服务器内部异常，请稍后重试')
 	}
+	return Promise.reject(error)
 })
 
 // 导出请求方法

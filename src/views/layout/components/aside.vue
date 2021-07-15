@@ -59,6 +59,7 @@ export default {
 
 <style scoped lang="less">
 .nav-menu {
+	height: 100%;
 	.nav-title {
 		text-align: center;
 		color: #eee;

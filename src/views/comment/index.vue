@@ -33,6 +33,17 @@
 						</el-switch>
 					</template>
 				</el-table-column>
+				 <el-table-column>
+				   <template slot-scope="scope">
+				     <el-link 
+							type="primary" 
+							@click="$router.push('/commentdetail?id=' + scope.row.id)" 
+							:disabled="scope.row.fans_comment_count===0"
+						 >
+							修改
+						</el-link>
+				   </template>
+				 </el-table-column>
 			</el-table>
 			<!-- size-change 每页条数   current-change  当前页-->
 			<el-pagination
