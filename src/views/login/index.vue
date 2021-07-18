@@ -8,13 +8,17 @@
 				<el-form-item prop="mobile" class="login-form-mobile">
 					<i class="el-icon-user-solid icon-user"></i>
 					<el-input v-model="user.mobile" 
-										placeholder="请输入手机号">
+										placeholder="请输入手机号"
+										class="field"
+										>
 										</el-input>
 				</el-form-item>
 				<el-form-item prop="code" class="login-form-mobile">
 					<i class="el-icon-mobile-phone icon-user"></i>
 					<el-input v-model="user.code" 
-										placeholder="请输入验证码"></el-input>
+										placeholder="请输入验证码"
+										class="field"
+										></el-input>
 				</el-form-item>
 				<el-form-item prop="agree">
 					<el-checkbox v-model="user.agree">我已阅读并同意用户协议和隐私条款</el-checkbox>
@@ -163,9 +167,10 @@ import { login } from '@/api/user'
 			position: relative;
 			.icon-user {
 				position: absolute;
-				top: 0;
+				top: -9px;
 				bottom: 0;
 				left: 0;
+				margin-bottom: 5px;
 				z-index: 1;
 				display: flex;
 				align-items: center;
@@ -191,5 +196,22 @@ import { login } from '@/api/user'
 				width: 100%;
 			}
 		}
+		.field {
+			overflow: hidden;
+		}
+		.field::before {
+		        content: '';
+		        position: absolute;
+		        left: 0;
+		        height: 2px;
+		        bottom: 0;
+		        width: 100%;
+		        background: linear-gradient(to right, white, #1abc9c, #f1c40f, #e74c3c, white);
+		        transform: translateX(-100%);
+		        transition: 2s;
+		    }
+		.field:hover::before {
+		        transform: translateX(100%);
+		    }
 	}
 </style>
