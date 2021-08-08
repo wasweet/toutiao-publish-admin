@@ -24,12 +24,12 @@
 
 ### 素材（图片）上传
 
-![image-20210807153627566](/Users/wangdongxu/Desktop/image-20210807153627566.png)
+![image-20210807153627566](./src/assets/image-20210807153627566.png)
 
 ### 富文本编辑器的使用（添加图片功能）
 
-![image-20210807153811951](/Users/wangdongxu/Desktop/image-20210807153811951.png)
+![image-20210807153811951](./src/assets/image-20210807153811951.png)
 
 ### 图片裁切功能
 
-![image-20210807154025292](/Users/wangdongxu/Desktop/image-20210807154025292.png)
+![image-20210807154025292](./src/assets/image-20210807154025292.png)
